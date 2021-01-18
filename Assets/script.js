@@ -32,6 +32,13 @@ let questionsArray = [
     ],
     correctAnswer: "Google it.",
   },
+  { 
+    question: "the end",
+    choices: [
+      "this is a placeholder 1", "this is a placeholder 2", "this is a placeholder 3", "this is a placeholder 4"
+    ],
+    correctAnswer: "this is a placeholder 1",
+  },
 ];
 
 timerEl = $('#counter');
@@ -49,7 +56,8 @@ function countdown() {
       // When `timeLeft` is equal to 1, rename to 'second' instead of 'seconds'
       timerEl.text(timeLeft + ' second remaining');
       timeLeft--;
-    } else {
+    }
+    else {
       // Once `timeLeft` gets to 0, set `timerEl` to an empty string
       timerEl.text('TIMES UP!');
       $('main').addClass("hidden");
@@ -63,11 +71,9 @@ function createQuestion() {
   $('#question').text(questionsArray[tracker].question);
   console.log(questionsArray[tracker].choices);
   for (var i = 0; i < questionsArray[tracker].choices.length; i++) {
-    console.log(i);
     if (i === 0) {
       $('#answer-button-1').text(questionsArray[tracker].choices[i])
       $('#answer-button-1').val(questionsArray[tracker].choices[i]);
-      console.log(questionsArray[tracker].choices[i]);
     }
     else if (i === 1) {
       $('#answer-button-2').text(questionsArray[tracker].choices[i])
@@ -82,12 +88,19 @@ function createQuestion() {
       $('#answer-button-4').val(questionsArray[tracker].choices[i]);
     }
   }
-//  increase tracker by one after each question is generated
-  tracker++;
   console.log(tracker);
 
 // enable buttons
   buttonEnable();
+}
+
+   // !!TRYING TO GET IT TO READ IF THE ARRAY IS OVER TO STOP TIMER AND QUEUE END OF GAME!!
+function endGame() {
+  if (tracker > questionsArray.length) {
+  clearInterval(clearInterval(timeInterval));
+  $("#question-section").addClass("hidden");
+  results.text("Game over! your score is: " + timeLeft + ". Thank you for playing!");
+  }
 }
 
 buttonDisable = function() {
@@ -104,36 +117,28 @@ buttonEnable = function() {
   $('#answer-button-4').attr("disabled", false);
 }
 
-// add next button function that activates createQuestion(); 
-
-// create checkAnswers() function: when buttons are clicked check that text matches the correct answer and then increase tracker and run create question again. display corrct or incorrect in the resluts area. if incorrect decrease time by 10 seconds.
-// on click inside each button to check answer. W3schools and MDN
-
+console.log(questionsArray[tracker].correctAnswer);
 
 // event listeners for checking answer on clicks
 $('#answer-button-1').on("click", function(){
   if ($('#answer-button-1').val() === questionsArray[tracker].correctAnswer) {
-    alert("Correct!");
     results.text("Correct!");
   }
   else if ($('#answer-button-1').val() !== questionsArray[tracker].correctAnswer) {
-    alert("Incorrect!");
     results.text("Incorrect!");
     timeLeft = timeLeft - 10;
   }
   console.log($('#answer-button-1').val());
-
+  
   buttonDisable();
   $('#next-button').removeClass("hidden");
 });
 
 $('#answer-button-2').on("click", function(){
   if ($('#answer-button-2').val() === questionsArray[tracker].correctAnswer) {
-    alert("Correct!");
     results.text("Correct!");
   }
   else if ($('#answer-button-2').val() !== questionsArray[tracker].correctAnswer) {
-    alert("Incorrect!");
     results.text("Incorrect!");
     timeLeft = timeLeft - 10;
   }
@@ -145,11 +150,9 @@ $('#answer-button-2').on("click", function(){
 
 $('#answer-button-3').on("click", function(){
   if ($('#answer-button-3').val() === questionsArray[tracker].correctAnswer) {
-    alert("Correct!");
     results.text("Correct!");
   }
   else if ($('#answer-button-3').val() !== questionsArray[tracker].correctAnswer) {
-    alert("Incorrect!");
     results.text("Incorrect!");
     timeLeft = timeLeft - 10;
   }
@@ -160,11 +163,9 @@ $('#answer-button-3').on("click", function(){
 
 $('#answer-button-4').on("click", function(){
   if ($('#answer-button-4').val() === questionsArray[tracker].correctAnswer) {
-    alert("Correct!");
     results.text("Correct!");
   }
   else if ($('#answer-button-4').val() !== questionsArray[tracker].correctAnswer) {
-    alert("Incorrect!");
     results.text("Incorrect!");
     timeLeft = timeLeft - 10;
   }
@@ -176,33 +177,16 @@ $('#answer-button-4').on("click", function(){
 
 // next button click handler
 $('#next-button').on("click", function () { 
-  $('results').text('');
+  results.text('');
+  tracker++;
   createQuestion(); 
   $(this).addClass("hidden");
 });
 
-
+//  start button click handler
 $('#start-button').on("click", function () {
   $('main').removeClass("hidden");
   $('#start-button').addClass("hidden");
   countdown();
   createQuestion();
 });
-
-
-
-// This code needs to generate a new question, record the answer, then assess if it is correct or incorrect.
-
-// The user starts the game with 100 points / seconds to finish.
-
-// The score is the time clock. The goal is to finish the quiz with the most time left.
-
-// If the question is correct, then display "correct!" and continue without reducing time, if incorrect then say "incorrect" and load next question. 
-
-// The user will have 10 questions to finish by the end of the time. If they do not finish then alert them they did not finish and tell them how many questions they had left
-
-// If they do finish then congratulate the user and diplay their score!  Then ask for an input of thier intials and record both the highscore and initials in local storage.  
-
-// The HIGH SCORES link in the header/navbar will pull the intials and the previous scores and display them in a list.
-
-// check into using modals for the questions and the high score list display.
