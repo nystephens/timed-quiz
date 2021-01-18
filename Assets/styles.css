@@ -1,0 +1,8 @@
+* {
+    border: red;
+    border-style: dotted;
+}
+
+.hidden {
+    display: none;
+}
